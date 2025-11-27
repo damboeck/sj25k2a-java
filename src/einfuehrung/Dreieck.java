@@ -4,10 +4,12 @@ import java.util.Scanner;
 
 public class Dreieck {
 
-    /** Seitenlaengen des Dreiecks
-     *  als globale Variablen
-     */
-    public static double a,b,c;
+    /** Seitenlaenge des Dreiecks als globale Variable */
+    public static double a;
+    /** Seitenlaenge des Dreiecks als globale Variable */
+    public static double b;
+    /** Seitenlaenge des Dreiecks als globale Variable */
+    public static double c;
 
     /**
      * Liest die drei Seitenlaengen eines Dreiecks vom Benutzer ein
@@ -60,6 +62,26 @@ public class Dreieck {
         double aR = Math.abs(x-y)/Math.max(Math.abs(x),Math.abs(y))*100.;
         boolean result = aR < tol;
         return result;
+    }
+
+    public static boolean equalsAbsolut(double x, double y, double tol) {
+        double aR = Math.abs(x-y);
+        boolean result = aR < tol;
+        return result;
+    }
+
+    /**
+     * Vergleicht zwei Gleitkommazahlen auf Gleichheit
+     * unter Beruecksichtigung einer Toleranz
+     * @param x erste Zahl
+     * @param y zweite Zahl
+     * @param tol Toleranz in Prozent oder Absolutwert je nach Parmameter absolut
+     * @param absolut gibt an ob relativ(false) oder absolut(true) geprüft werden soll
+     * @return true, wenn x und y innerhalb der Toleranz gleich sind
+     */
+    public static boolean equals(double x, double y, double tol, boolean absolut) {
+        if (absolut) return equalsAbsolut(x,y,tol);
+        return equals(x,y,tol);
     }
 
     public static void main(String[] args) {
