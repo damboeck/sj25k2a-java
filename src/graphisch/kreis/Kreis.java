@@ -76,6 +76,14 @@ public class Kreis {
         my += dy;
     }
 
+    /**
+     * Ändert den Radius des Kreis so, dass der Punkt am Kreis liegt
+     * @param p neuer Punkt am Kreis
+     */
+    public void resize(Point p) {
+        r = Math.sqrt(Math.pow(p.x-mx,2)+Math.pow(p.y-my,2));
+    }
+
     public double getR() {
         return r;
     }

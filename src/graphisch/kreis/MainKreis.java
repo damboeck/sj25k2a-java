@@ -6,16 +6,21 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.Vector;
 
 public class MainKreis extends MyFrame {
 
     private Point lastMC; // Letzte Mausposition
     private EDITMODE editmode = EDITMODE.NORMAL;
-    private Kreis k;
+    private Vector<Kreis> kreise ;
+    private Kreis selectedKreis=null;
 
     public MainKreis() {
         super("Kreis", 1000, 800);
-        k = new Kreis(100,500,400,Color.red,Color.magenta,5);
+        kreise = new Vector<>();
+        Kreis k = new Kreis(100,500,400,Color.red,Color.magenta,5);
+        kreise.add(k);
+        kreise.add(new Kreis(50,100,400,Color.blue,null,10));
         setVisible(true);
     }
 
@@ -26,7 +31,9 @@ public class MainKreis extends MyFrame {
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        k.paint(g2);
+        for (Kreis k : kreise) {
+            k.paint(g2);
+        }
     }
 
     @Override
@@ -36,17 +43,18 @@ public class MainKreis extends MyFrame {
                 // Wohin wurde geklickt? (e.getX(), e.getY())
                 Point mc = e.getPoint();
                 // Ist die Maus auf dem Kreis?
-                if (k.onElement(mc)) {
-                    lastMC = mc;
-                    switch (e.getModifiersEx()) {
-                        case MouseEvent.SHIFT_DOWN_MASK: // Shiftgedrückt
+                for (Kreis k : kreise) {
+                    if (k.onElement(mc)) {
+                        lastMC = mc;
+                        selectedKreis = k;
+                        if ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0) {
+                            // jetzt ist die Hochstelltaste gedrückt
                             // Größenänderung
                             editmode = EDITMODE.RESIZE;
-                            break;
-                        case 0: // Keine  Modifikatortaste gedrückt
+                        } else {
                             // Verschiebung
                             editmode = EDITMODE.MOVE;
-                            break;
+                        }
                     }
                 }
                 break;
@@ -64,12 +72,30 @@ public class MainKreis extends MyFrame {
         switch (editmode) {
             case MOVE:
                 // Verschiebung beenden
-                k.move(e.getX()-lastMC.x, e.getY()-lastMC.y);
+                //k.move(e.getX()-lastMC.x, e.getY()-lastMC.y);
                 editmode = EDITMODE.NORMAL;
-                repaint();
+                //repaint();
                 break;
             case RESIZE:
                 // Größenänderung beenden
+                //k.resize(e.getPoint());
+                editmode = EDITMODE.NORMAL;
+                //repaint();
+                break;
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        switch (editmode) {
+            case MOVE:
+                selectedKreis.move(e.getX()-lastMC.x, e.getY()-lastMC.y);
+                lastMC = e.getPoint();
+                repaint();
+                break;
+            case  RESIZE:
+                selectedKreis.resize(e.getPoint());
+                repaint();
                 break;
         }
     }
