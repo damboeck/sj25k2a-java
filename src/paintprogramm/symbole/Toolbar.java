@@ -10,7 +10,7 @@ public class Toolbar implements Paintable {
 
     int symbolSize = 30;
     private PositionEnum position;
-    private WindowInfo windowInfo;
+    protected WindowInfo windowInfo;
     private Vector<Tool> tools = new Vector<>();
 
     public Toolbar(WindowInfo windowInfo) {
@@ -18,6 +18,14 @@ public class Toolbar implements Paintable {
         this.windowInfo = windowInfo;
         tools.add(new Tool(this,ToolEnum.SELECT));
         tools.add(new Tool(this,ToolEnum.LINE));
+        tools.add(new Tool(this,ToolEnum.RECT));
+        tools.add(new Tool(this,ToolEnum.OVAL));
+        tools.add(new Tool(this,ToolEnum.FREEHAND));
+        tools.add(new Tool(this,ToolEnum.DRAWCOLOR));
+        tools.add(new Tool(this,ToolEnum.FILLCOLOR));
+        tools.add(new Tool(this,ToolEnum.PALETTE));
+        tools.add(new Tool(this,ToolEnum.LINESIZE));
+        tools.add(new Tool(this,ToolEnum.LINEMODE));
     }
 
     @Override
@@ -38,5 +46,35 @@ public class Toolbar implements Paintable {
         }
 
     }
+
+    /**
+     * verarbeitet die Linke Maustaste wenn sie auf der Symbolleiste liegt
+     * @param p  Mouse-Position
+     * @return   true wenn die Maus auf der Symbolleiste liegt
+     */
+    public boolean leftMousePressed(Point p) {
+        int mx = p.x;
+        int my = p.y;
+        switch(position) {
+            //TODO alle anderen Lagen müssen noch programmiert werden
+            default:
+            case LEFT:
+                if (mx <= symbolSize) {
+                    int toolIndex = my / symbolSize;
+                    if (toolIndex < tools.size()) {
+                        Tool tool = tools.get(toolIndex);
+                        tool.leftMousePressed(mx / symbolSize * 100, (my - toolIndex * symbolSize) / symbolSize * 100);
+                    }
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    public void deSelectAll() {
+        for (Tool t:tools) t.selected=false;
+    }
+
 
 }

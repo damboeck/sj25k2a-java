@@ -17,6 +17,28 @@ public class PaintMain extends MyFrame implements WindowInfo {
 
     private Toolbar toolbar;
 
+    private Color drawColor = Color.BLACK;
+    private Color fillColor = Color.RED;
+
+    @Override
+    public Color getDrawColor() {
+        return drawColor;
+    }
+
+    public void setDrawColor(Color drawColor) {
+        this.drawColor = drawColor;
+    }
+
+    @Override
+    public Color getFillColor() {
+        return fillColor;
+    }
+
+    public void setFillColor(Color fillColor) {
+        this.fillColor = fillColor;
+    }
+
+
     public PaintMain() {
         super("Paint", 1000, 800);
         toolbar = new Toolbar(this);
@@ -48,6 +70,14 @@ public class PaintMain extends MyFrame implements WindowInfo {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        Point mc = new Point(e.getX()-FRAME_LEFT, e.getY()-FRAME_TOP);
+        // Symbolleiste verarbeiten
+        if (e.getButton()==MouseEvent.BUTTON1)
+            if (toolbar.leftMousePressed(mc))  {
+                repaint();
+                return;
+            }
+        // restliches Fenster verarbeiten
 
     }
 
