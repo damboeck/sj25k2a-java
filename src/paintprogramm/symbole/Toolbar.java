@@ -13,6 +13,12 @@ public class Toolbar implements Paintable {
     protected WindowInfo windowInfo;
     private Vector<Tool> tools = new Vector<>();
 
+    // aktuelle Zeichenparameter
+    protected Color     drawColor = Color.BLACK;
+    protected Color     fillColor = Color.RED;
+    protected int       lineWidth = 1;
+    protected LINESTYLE lineStyle = LINESTYLE.LINIE;
+
     public Toolbar(WindowInfo windowInfo) {
         this.position   = PositionEnum.LEFT;
         this.windowInfo = windowInfo;

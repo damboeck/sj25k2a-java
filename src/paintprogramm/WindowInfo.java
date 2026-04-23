@@ -9,7 +9,5 @@ public interface WindowInfo {
 
     int   getWidth();
     int   getHeight();
-    Color getDrawColor();
-    Color getFillColor();
 
 }

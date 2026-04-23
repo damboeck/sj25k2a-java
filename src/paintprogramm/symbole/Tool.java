@@ -49,11 +49,11 @@ public class Tool {
                 g.drawPolyline(x,y,n);
             }
             case DRAWCOLOR -> {
-                g.setColor(toolbar.windowInfo.getDrawColor());
+                g.setColor(toolbar.drawColor);
                 g.fillRect(pos.x+2,pos.y+2,s-4,s-4);
             }
             case FILLCOLOR -> {
-                g.setColor(toolbar.windowInfo.getFillColor());
+                g.setColor(toolbar.fillColor);
                 g.fillRect(pos.x+2,pos.y+2,s-4,s-4);
             }
         }

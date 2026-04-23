@@ -1,12 +1,14 @@
 package paintprogramm;
 
 import graphisch.MyFrame;
+import paintprogramm.symbole.LINESTYLE;
 import paintprogramm.symbole.Toolbar;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.Vector;
 
 public class PaintMain extends MyFrame implements WindowInfo {
 
@@ -16,28 +18,7 @@ public class PaintMain extends MyFrame implements WindowInfo {
     private static final int FRAME_RIGHT  = 6;
 
     private Toolbar toolbar;
-
-    private Color drawColor = Color.BLACK;
-    private Color fillColor = Color.RED;
-
-    @Override
-    public Color getDrawColor() {
-        return drawColor;
-    }
-
-    public void setDrawColor(Color drawColor) {
-        this.drawColor = drawColor;
-    }
-
-    @Override
-    public Color getFillColor() {
-        return fillColor;
-    }
-
-    public void setFillColor(Color fillColor) {
-        this.fillColor = fillColor;
-    }
-
+    private Vector<Paintable> elements = new Vector<>();
 
     public PaintMain() {
         super("Paint", 1000, 800);
@@ -78,6 +59,16 @@ public class PaintMain extends MyFrame implements WindowInfo {
                 return;
             }
         // restliches Fenster verarbeiten
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
 
     }
 
