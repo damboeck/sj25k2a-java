@@ -1,5 +1,9 @@
 package paintprogramm.symbole;
 
+import paintprogramm.Paintable;
+import paintprogramm.elements.ZPLinie;
+import paintprogramm.elements.ZPRect;
+
 import java.awt.*;
 
 public class Tool {
@@ -73,6 +77,53 @@ public class Tool {
             }
             default -> {
 
+            }
+        }
+    }
+
+    /**
+     * Verarbeitet einen Mausklick auf der linke Maustaste in der Zeichenebene
+     * @param mc translate-kompatible Mausposition
+     */
+    public void imageLeftMousePressed(Point mc) {
+        switch (toolEnum) {
+            case LINE -> {
+                ZPLinie zpl = new ZPLinie(mc,mc,toolbar.drawColor, toolbar.lineWidth, toolbar.lineStyle);
+                toolbar.windowInfo.getElements().add(zpl);
+                toolbar.selectedElement = zpl;
+            }
+            case RECT -> {
+                ZPRect zp = new ZPRect(mc,mc,toolbar.drawColor, toolbar.fillColor, toolbar.lineWidth, toolbar.lineStyle);
+                toolbar.windowInfo.getElements().add(zp);
+                toolbar.selectedElement = zp;
+            }
+        }
+    }
+
+    public void imageLeftMouseReleased(Point mc) {
+        if (toolbar.selectedElement==null) return;
+        Paintable p = toolbar.getSelectedElement();
+        switch (toolEnum) {
+            case LINE -> {
+                if (p instanceof ZPLinie) ((ZPLinie) p).setP2(mc);
+                toolbar.selectedElement = null;
+            }
+            case RECT -> {
+                if (p instanceof ZPRect) ((ZPRect) p).setP2(mc);
+                toolbar.selectedElement = null;
+            }
+        }
+    }
+
+    public void imageMouseDragged(Point mc) {
+        if (toolbar.selectedElement==null) return;
+        Paintable p = toolbar.getSelectedElement();
+        switch (toolEnum) {
+            case LINE -> {
+                if (p instanceof ZPLinie) ((ZPLinie) p).setP2(mc);
+            }
+            case RECT -> {
+                if (p instanceof ZPRect) ((ZPRect) p).setP2(mc);
             }
         }
     }

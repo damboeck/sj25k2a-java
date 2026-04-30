@@ -8,10 +8,11 @@ import java.util.Vector;
 
 public class Toolbar implements Paintable {
 
-    int symbolSize = 30;
-    private PositionEnum position;
-    protected WindowInfo windowInfo;
-    private Vector<Tool> tools = new Vector<>();
+    int        symbolSize = 30;
+    private    PositionEnum position;
+    protected  WindowInfo   windowInfo;
+    private    Vector<Tool> tools = new Vector<>();
+    protected  Paintable    selectedElement=null;
 
     // aktuelle Zeichenparameter
     protected Color     drawColor = Color.BLACK;
@@ -80,6 +81,16 @@ public class Toolbar implements Paintable {
 
     public void deSelectAll() {
         for (Tool t:tools) t.selected=false;
+    }
+
+    public Tool getSelectedTool() {
+        for (Tool t:tools)
+            if (t.selected) return t;
+        return null;
+    }
+
+    public Paintable getSelectedElement() {
+        return selectedElement;
     }
 
 

@@ -2,6 +2,7 @@ package paintprogramm;
 
 import graphisch.MyFrame;
 import paintprogramm.symbole.LINESTYLE;
+import paintprogramm.symbole.Tool;
 import paintprogramm.symbole.Toolbar;
 
 import java.awt.*;
@@ -41,17 +42,31 @@ public class PaintMain extends MyFrame implements WindowInfo {
     }
 
     @Override
+    public Vector<Paintable> getElements() {
+        return elements;
+    }
+
+    @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         // Schiebe das Fenster korrekt!
         g2d.translate(FRAME_LEFT,FRAME_TOP);
-
+        // Zeichenebene zeichnen
+        for (Paintable e : elements) {
+            e.paint(g2d);
+        }
+        g2d.setStroke(new BasicStroke(1));
         toolbar.paint(g2d);
+    }
+
+    private Point imageMousePos(Point mc) {
+        return new Point(mc.x-FRAME_LEFT, mc.y-FRAME_TOP);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Point mc = new Point(e.getX()-FRAME_LEFT, e.getY()-FRAME_TOP);
+        // Point mc = new Point(e.getX()-FRAME_LEFT, e.getY()-FRAME_TOP);
+        Point mc = imageMousePos(e.getPoint());
         // Symbolleiste verarbeiten
         if (e.getButton()==MouseEvent.BUTTON1)
             if (toolbar.leftMousePressed(mc))  {
@@ -59,17 +74,37 @@ public class PaintMain extends MyFrame implements WindowInfo {
                 return;
             }
         // restliches Fenster verarbeiten
-
+        Tool selectedTool = toolbar.getSelectedTool();
+        if (selectedTool!=null) {
+            if (e.getButton()==MouseEvent.BUTTON1) {
+                selectedTool.imageLeftMousePressed(mc);
+                repaint();
+            }
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        Point mc = imageMousePos(e.getPoint());
+        Tool selectedTool = toolbar.getSelectedTool();
+        if (selectedTool!=null) {
+            if (e.getButton()==MouseEvent.BUTTON1 && toolbar.getSelectedElement()!=null) {
+                selectedTool.imageLeftMouseReleased(mc);
+                repaint();
+            }
+        }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        Point mc = imageMousePos(e.getPoint());
+        Tool selectedTool = toolbar.getSelectedTool();
+        if (selectedTool!=null) {
+            if (toolbar.getSelectedElement()!=null) {
+                selectedTool.imageMouseDragged(mc);
+                repaint();
+            }
+        }
     }
 
     @Override
