@@ -1,6 +1,7 @@
 package paintprogramm.symbole;
 
 import paintprogramm.Paintable;
+import paintprogramm.Selectable;
 import paintprogramm.WindowInfo;
 
 import java.awt.*;
@@ -91,6 +92,14 @@ public class Toolbar implements Paintable {
 
     public Paintable getSelectedElement() {
         return selectedElement;
+    }
+
+    public void deSelectAllElements() {
+        for (Paintable p: windowInfo.getElements())
+            if (p instanceof Selectable) {
+                Selectable sel = (Selectable) p;
+                sel.setSelected(false);
+            }
     }
 
 

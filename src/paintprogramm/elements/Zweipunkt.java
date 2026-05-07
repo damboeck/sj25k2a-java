@@ -1,16 +1,21 @@
 package paintprogramm.elements;
 
 import paintprogramm.Paintable;
+import paintprogramm.Selectable;
 import paintprogramm.symbole.LINESTYLE;
 
 import java.awt.*;
 
-public abstract class Zweipunkt implements Paintable {
+public abstract class Zweipunkt
+        implements
+        Paintable,
+        Selectable {
 
     private Color     drawColor;
     private int       lineWidth = 1;
     private LINESTYLE lineStyle = LINESTYLE.LINIE;
-    private Point     p1, p2;
+    protected Point   p1, p2;
+    private boolean   selected;
 
     public Zweipunkt(Point p1, Point p2, Color drawColor, int lineWidth, LINESTYLE lineStyle) {
         this.p1 = p1;
@@ -57,4 +62,13 @@ public abstract class Zweipunkt implements Paintable {
     public void setP2(Point p2) {
         this.p2 = p2;
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void    setSelected(boolean b) {
+        this.selected = b;
+    }
+
 }

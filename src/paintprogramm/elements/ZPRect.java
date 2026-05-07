@@ -17,10 +17,20 @@ public class ZPRect extends ZPF {
         int  width  = Integer.max(getP1().x,getP2().x) - left;
         int  height = Integer.max(getP1().y,getP2().y) - top;
         g.setColor(getFillColor());
+        if (isSelected()) g.setColor(Color.gray);
         g.fillRect(left,top,width,height);
         g.setColor(getDrawColor());
         g.setStroke(new BasicStroke(getLineWidth()));
         g.drawRect(left,top,width,height);
+    }
+
+    @Override
+    public boolean select(Point mc) {
+        int  left   = Integer.min(getP1().x,getP2().x);
+        int  top    = Integer.min(getP1().y,getP2().y);
+        int  right  = Integer.max(getP1().x,getP2().x);
+        int  bottom = Integer.max(getP1().y,getP2().y);
+        return mc.x>=left && mc.x<=right && mc.y>=top && mc.y<=bottom;
     }
 
 }

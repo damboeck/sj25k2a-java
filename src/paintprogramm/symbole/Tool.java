@@ -1,6 +1,7 @@
 package paintprogramm.symbole;
 
 import paintprogramm.Paintable;
+import paintprogramm.Selectable;
 import paintprogramm.elements.ZPLinie;
 import paintprogramm.elements.ZPRect;
 
@@ -96,6 +97,24 @@ public class Tool {
                 ZPRect zp = new ZPRect(mc,mc,toolbar.drawColor, toolbar.fillColor, toolbar.lineWidth, toolbar.lineStyle);
                 toolbar.windowInfo.getElements().add(zp);
                 toolbar.selectedElement = zp;
+            }
+            case SELECT -> {
+                toolbar.deSelectAllElements();
+                toolbar.selectedElement = null;
+                for (Paintable p : toolbar.windowInfo.getElements()) {
+                    if (p instanceof Selectable) {
+                        Selectable sel = (Selectable) p;
+                        if (sel.select(mc)) {
+                            toolbar.selectedElement = p;
+                        }
+                    }
+                }
+                if (toolbar.selectedElement!=null) {
+                    if (toolbar.selectedElement instanceof Selectable) {
+                        Selectable sel = (Selectable) toolbar.selectedElement;
+                        sel.setSelected(true);
+                    }
+                }
             }
         }
     }
