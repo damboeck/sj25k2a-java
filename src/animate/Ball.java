@@ -54,11 +54,6 @@ public class Ball implements Paintable,Animateable {
     }
 
     @Override
-    public void collission(Animateable a) {
-
-    }
-
-    @Override
     public void collision(FixElement f) {
         if (f instanceof FixHLine) {
             double y = ((FixHLine)f).getY();
@@ -81,5 +76,11 @@ public class Ball implements Paintable,Animateable {
         } else throw new RuntimeException("Unbekanntes FixElement");
     }
 
+    public void collide(Ball b) {
+       double d = m.sub(b.m).abs();
+       if (d<r+b.r) {
+           
+       }
+    }
 
 }

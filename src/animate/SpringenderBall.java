@@ -40,7 +40,7 @@ public class SpringenderBall extends MyFrameAnimate{
                 a.collision(e);
             }
         }
-        //FIX gegenseitige Kollision aller beweglichen Elemente
+        CollisionService.checkCollisions(animateables);
         for (Animateable a : animateables)
             if (a instanceof Paintable)
                 ((Paintable) a).paint(g2);
