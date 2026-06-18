@@ -10,5 +10,8 @@ public class FixHLine extends FixElement  {
         this.y = y;
     }
 
+    public double getY() {
+        return y;
+    }
 
 }

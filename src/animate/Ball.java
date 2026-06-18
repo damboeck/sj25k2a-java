@@ -1,10 +1,16 @@
 package animate;
 
+import animate.fixElements.FixElement;
+import animate.fixElements.FixHLine;
+import animate.fixElements.FixVLine;
 import paintprogramm.Paintable;
 
 import java.awt.*;
 
 public class Ball implements Paintable,Animateable {
+
+    private static final double gummiR = 0.85;
+    private static final double gummiB = 0.95;
 
     private Color  color;
     private double r;
@@ -51,4 +57,29 @@ public class Ball implements Paintable,Animateable {
     public void collission(Animateable a) {
 
     }
+
+    @Override
+    public void collision(FixElement f) {
+        if (f instanceof FixHLine) {
+            double y = ((FixHLine)f).getY();
+            if (mOld.y<y-r && m.y>=y-r) { // Reflexion nach oben
+                v = new Vect2D(vOld.x* gummiB, -vOld.y*gummiR);
+                m = new Vect2D(m.x, 2*y-2*r-m.y);
+            } else if (mOld.y>y+r && m.y<=y+r) { // Reflexion nach unten
+                v = new Vect2D(v.x* gummiB, -v.y*gummiR);
+                m = new Vect2D(m.x, 2*y+2*r-m.y);
+            }
+        } else if (f instanceof FixVLine) {
+            double x = ((FixVLine)f).getX();
+            if (mOld.x<x-r && m.x>=x-r) { // Reflexion nach rechts
+                v = new Vect2D(-v.x*gummiR, v.y* gummiB);
+                m = new Vect2D(2*x-2*r-m.x, m.y);
+            } else if (mOld.x>x+r && m.x<=x+r) { // Reflexion nach links
+                v = new Vect2D(-v.x*gummiR, v.y* gummiB);
+                m = new Vect2D(2*x+2*r-m.x, m.y);
+            }
+        } else throw new RuntimeException("Unbekanntes FixElement");
+    }
+
+
 }

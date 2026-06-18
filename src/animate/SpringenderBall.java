@@ -1,5 +1,10 @@
 package animate;
 
+import animate.fixElements.FixElement;
+import animate.fixElements.FixHLine;
+import animate.fixElements.FixVLine;
+import paintprogramm.Paintable;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -8,8 +13,8 @@ import java.util.Vector;
 
 public class SpringenderBall extends MyFrameAnimate{
 
-    private Ball ball;
-    private Vector<FixElement> fixElements = new Vector<>();
+    private Vector<Animateable> animateables = new Vector<>();
+    private Vector<FixElement>  fixElements = new Vector<>();
 
     public static void main(String[] args) {
         new SpringenderBall("Springender Ball", 800, 600);
@@ -17,18 +22,28 @@ public class SpringenderBall extends MyFrameAnimate{
 
     public SpringenderBall(String title, int width, int height) {
         super(title, width, height);
-        ball = new Ball(Color.red,20,100,300,0.15,-0.15,0,2e-4);
+        animateables.add(new Ball(Color.red,20,100,300,0.15,-0.35,0,2e-4));
+        fixElements.add(new FixHLine(20));
+        fixElements.add(new FixHLine(height-2));
+        fixElements.add(new FixVLine(2));
+        fixElements.add(new FixVLine(width-2));
         this.setVisible(true);
     }
 
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        if  (ball!=null) {
-            ball.move(this.getDeltaTimeMs());
-            // TODO Kollision
-            ball.paint(g2);
+        for (Animateable a : animateables)
+            a.move(this.getDeltaTimeMs());
+        for (Animateable a : animateables) {
+            for (FixElement e : fixElements) {
+                a.collision(e);
+            }
         }
+        //FIX gegenseitige Kollision aller beweglichen Elemente
+        for (Animateable a : animateables)
+            if (a instanceof Paintable)
+                ((Paintable) a).paint(g2);
     }
 
     @Override
